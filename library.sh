@@ -18,6 +18,7 @@ if [ $? -ne 0 ]; then
 echo "Book not found. Please try again."
 search_books
 fi
+display_reader_menu
 }
 
 buy_books() {
@@ -44,6 +45,7 @@ total_price=$((total_price + $(printf $price)))
 done
 
 echo "Total price: $total_price"
+display_reader_menu
 }
 
 borrow_book() {
@@ -66,6 +68,7 @@ else
 echo "Operation accomplished successfully."
 fi
 fi
+display_reader_menu
 }
 
 return_book() {
@@ -81,6 +84,7 @@ else
 sed -i "/$book_info/d" $BORROW_FILE
 echo "Operation accomplished successfully."
 fi
+display_reader_menu
 }
 
 add_book() {
