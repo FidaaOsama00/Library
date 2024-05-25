@@ -83,21 +83,15 @@ echo "Operation accomplished successfully."
 fi
 }
 
-
-# Main program
-echo "1. Reader"
-echo "2. Library Staff"
-echo -n "Enter your choice: "
-read choice
-
-case $choice in
 # Reader
-1)
+display_reader_menu() {
 echo "   "
+echo "Choose an operation"
 echo "a. Search"
 echo "b. Buy book"
 echo "c. Borrow book"
 echo "d. Return book"
+echo "e. Exit"
 echo -n "Enter your choice: "
 read reader_choice
 case $reader_choice in
@@ -110,15 +104,28 @@ buy_books
 c)
 borrow_book
 ;;
-
 d)
 return_book
 ;;
-*)
-echo "Invalid choice. Exiting..."
+e)
 exit
 ;;
+*)
+echo "Invalid choice. Try again..."
+;;
 esac
+}
+
+
+# Main program
+echo "1. Reader"
+echo "2. Library Staff"
+echo -n "Enter your choice: "
+read choice
+case $choice in 
+
+1) 
+display_reader_menu
 ;;
 
 # Library Staff
