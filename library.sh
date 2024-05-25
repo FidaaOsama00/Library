@@ -83,6 +83,44 @@ echo "Operation accomplished successfully."
 fi
 }
 
+add_book() {
+echo "Add a new book:"
+read -p "Title: " title
+read -p "Price: " price
+   
+if grep -q -F "Title: $title, Price: $price" "$BOOKS_FILE"; then
+   echo "The book already exists in the library."
+else
+   echo "Title: $title, Price: $price" >> "$BOOKS_FILE"
+   echo "Book added successfully!"
+fi    
+}
+
+list_books() {
+echo "Book list:"
+echo "-------------------------"
+cat "$BOOKS_FILE"
+echo "-------------------------"  
+}
+
+search_book() {
+read -p "Enter the title to search for: " search_title
+if awk -v t="$search_title" 'tolower($0) ~ tolower(t) { found=1; print; } END { if (!found) print "The book is not found in the library." }' "$BOOKS_FILE"; then
+    :
+fi
+}
+
+delete_book() {
+read -p "Enter the title to delete: " delete_title
+if grep -qi "Title: $delete_title" "$BOOKS_FILE"; then
+    grep -vi "Title: $delete_title" "$BOOKS_FILE" > temp.txt
+    mv temp.txt "$BOOKS_FILE"
+    echo "Book deleted successfully!"
+else
+    echo "The book is not found in the library."
+fi   
+}
+
 # Reader
 display_reader_menu() {
 echo "   "
@@ -116,8 +154,40 @@ echo "Invalid choice. Try again..."
 esac
 }
 
+display_libraryStaff_menu() {
+echo ""
+echo "1. Add a new book"
+echo "2. List all books"
+echo "3. Search for a book"
+echo "4. Delete a book"
+echo "5. Exit"
+read -p "Enter the number of the desired operation: " libraryStaff_choice
+
+case $libraryStaff_choice in
+      1)
+         add_book
+         ;;
+      2)
+         list_books
+         ;;
+      3)
+         search_book
+         ;;
+      4)
+         delete_book
+         ;;
+      5)
+         echo "Thank you for using the library management system!"
+         exit 0
+         ;;
+      *)
+         echo "Invalid operation number. Please try again."
+         ;;
+esac
+}
 
 # Main program
+echo "Welcome to the Library Management System!"
 echo "1. Reader"
 echo "2. Library Staff"
 echo -n "Enter your choice: "
@@ -130,7 +200,15 @@ display_reader_menu
 
 # Library Staff
 2)
-echo "Here will be the code for the library staff."
+read -s -p "Please enter the password: " password
+if [ "$password" = "1234" ]; then
+   while true; do
+       display_libraryStaff_menu
+       done
+else
+   echo "Incorrect password. Access denied."
+   exit 1
+fi
 ;;
 *)
 echo "Invalid choice. Exiting..."
