@@ -154,6 +154,7 @@ exit
 ;;
 *)
 echo "Invalid choice. Try again..."
+display_reader_menu
 ;;
 esac
 }
